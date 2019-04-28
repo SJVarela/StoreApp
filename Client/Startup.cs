@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -47,7 +48,9 @@ namespace Client
                 });
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            //Identity
+            services.AddDefaultIdentity<User>()
+                .AddEntityFrameworkStores<UserDbContext>();
             //Services
 
             services.AddScoped<StoreDbContext>();
@@ -71,6 +74,7 @@ namespace Client
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>
