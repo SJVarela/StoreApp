@@ -1,0 +1,19 @@
+﻿@model Domain.Entities.Product
+
+<div class="col s12 m6">
+    <div class="card">
+        <div class="card-image">
+            @*<img src=@Model.PictureUri>*@
+        </div>
+        <div class="card-content">
+            <span class="card-title header blue-text">@Model.Name</span>
+            <p>
+                @Model.Description
+            </p>
+            <h2>@Model.Price</h2>
+        </div>
+        <div class="card-action">
+            <a href="#">Purchase</a>
+        </div>
+    </div>
+</div>
