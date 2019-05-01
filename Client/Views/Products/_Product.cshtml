@@ -4,14 +4,13 @@
     <div class="card">
         <div class="card-image">
             <img src=@GetImage()>
-            <span class="card-title blue lighten-3">@Model.Name</span>
         </div>
         <div class="card-content">
-
-            <p class="flow-text">
+            <h3>@Model.Name</h3>
+            <p>
                 @Model.Description
             </p>
-            <h4>@Model.Price</h4>
+            <h5 class="right-align">$@Model.Price</h5>
         </div>
         <div class="card-action">
             <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Id">View</a>
