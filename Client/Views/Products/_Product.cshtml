@@ -3,17 +3,33 @@
 <div class="col s12 m6">
     <div class="card">
         <div class="card-image">
-            @*<img src=@Model.PictureUri>*@
+            <img src=@GetImage()>
+            <span class="card-title blue lighten-3">@Model.Name</span>
         </div>
         <div class="card-content">
-            <span class="card-title header blue-text">@Model.Name</span>
-            <p>
+
+            <p class="flow-text">
                 @Model.Description
             </p>
-            <h2>@Model.Price</h2>
+            <h4>@Model.Price</h4>
         </div>
         <div class="card-action">
-            <a href="#">Purchase</a>
+            <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Id">View</a>
         </div>
     </div>
 </div>
+
+@{
+    string GetImage()
+    {
+        if(Model.PictureUri == null)
+        {
+            return "/images/products/notFound.png";
+        }
+        else
+        {
+            return Model.PictureUri;
+        }
+    }
+}
+

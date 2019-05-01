@@ -48,12 +48,18 @@ namespace Client
                 });
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            //Db Seeding
+            var seed = new StoreDbContextSeed(services.BuildServiceProvider().GetService<StoreDbContext>());
+
             //Identity
             services.AddDefaultIdentity<User>()
                 .AddEntityFrameworkStores<UserDbContext>();
-            //Services
 
+
+            //Services
             services.AddScoped<StoreDbContext>();
+
         }
 
 
