@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Services;
+using Application.Services.Interfaces;
 using Domain.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -59,6 +61,7 @@ namespace Client
 
             //Services
             services.AddScoped<StoreDbContext>();
+            services.AddScoped<IProductService, ProductService>();
 
         }
 

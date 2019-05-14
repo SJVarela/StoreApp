@@ -8,49 +8,43 @@ using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
 using Persistance.Data;
 using Microsoft.AspNetCore.Authorization;
+using Application.Services.Interfaces;
 
 namespace Client.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly StoreDbContext _context;
+        private IProductService _productService;
 
-        public ProductsController(StoreDbContext context)
+        public ProductsController(IProductService productService)
         {
-            _context = context;
+            _productService = productService;
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var storeDbContext = _context.Products.Include(p => p.Category);
-            return View(await storeDbContext.ToListAsync());
+            return View(await _productService.GetProductsAsync());
         }
 
-        // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        // GET: Products/5
 
-            var product = await _context.Products
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
+        public async Task<IActionResult> Details(int id)
+        {
+            var product =await _productService.GetProduct(id);
             if (product == null)
             {
                 return NotFound();
             }
-
             return View(product);
         }
 
         // GET: Products/Create
         [Authorize]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+            var categories = await _productService.GetCategories();
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name");
             return View();
         }
 
@@ -64,29 +58,25 @@ namespace Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
+                await _productService.Add(product);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+            var categories = await _productService.GetCategories();
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name", product.CategoryId);
             return View(product);
         }
 
         // GET: Products/Edit/5
         [Authorize]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products.FindAsync(id);
+            var product = await _productService.GetProduct(id);
             if (product == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+            var categories = await _productService.GetCategories();
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name", product.CategoryId);
             return View(product);
         }
 
@@ -107,12 +97,11 @@ namespace Client.Controllers
             {
                 try
                 {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
+                    await _productService.Update(product);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.Id))
+                    if (_productService.GetProduct(product.Id) == null)
                     {
                         return NotFound();
                     }
@@ -123,22 +112,16 @@ namespace Client.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+            var categories = await _productService.GetCategories();
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name", product.CategoryId);
             return View(product);
         }
 
         // GET: Products/Delete/5
         [Authorize]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _productService.GetProduct(id);
             if (product == null)
             {
                 return NotFound();
@@ -152,15 +135,10 @@ namespace Client.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+            await _productService.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductExists(int id)
-        {
-            return _context.Products.Any(e => e.Id == id);
-        }
+
     }
 }
