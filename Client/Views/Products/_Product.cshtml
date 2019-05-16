@@ -1,16 +1,18 @@
-﻿@model Domain.Entities.Product
+﻿@using Microsoft.AspNetCore.Identity
+@using Domain.Entities
 
-<div class="col s12 m6">
-    <div class="card">
+@model Domain.Entities.Product
+@inject SignInManager<User> SignInManager
+
+
+<div class="col s4">
+    <div class="card large">
         <div class="card-image">
             <img src=@GetImage()>
         </div>
         <div class="card-content">
-            <h3>@Model.Name</h3>
-            <p>
-                @Model.Description
-            </p>
-            <h5 class="right-align">$@Model.Price</h5>
+            <h4>@Model.Name</h4>
+            <h5 class="right-align grey-text">$@Model.Price</h5>
         </div>
         <div class="card-action">
             <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Id">View</a>
@@ -21,7 +23,7 @@
 @{
     string GetImage()
     {
-        if(Model.PictureUri == null)
+        if (Model.PictureUri == null)
         {
             return "/images/products/notFound.png";
         }

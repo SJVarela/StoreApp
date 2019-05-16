@@ -7,12 +7,12 @@
 @using Microsoft.AspNetCore.Identity
 @using Domain.Entities
 
-<h2>Products</h2>
-
 <p>
     @if (SignInManager.IsSignedIn(User))
     {
-        <a asp-action="Create">Create New</a>
+    <div class="fixed-action-btn">
+        <a class="btn btn-large" asp-action="Create">Create New</a>
+    </div>        
     }
 </p>
 

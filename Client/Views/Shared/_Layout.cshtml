@@ -20,13 +20,15 @@
 <body>
     <div class="navbar-fixed">
         <nav>
-            <div class="nav-wrapper">
+            <div class="nav-wrapper container">
                 <a class="brand-logo" asp-controller="Home" asp-action="Index">Yard Sale</a>
                 <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                 <ul class="right hide-on-med-and-down">
                     <li><a asp-area="" asp-controller="Products" asp-action="Index">Products</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <partial name="_LoginPartial" />
+                    <li>
+                        <partial name="_LoginPartial" />
+                    </li>                    
                 </ul>
             </div>
         </nav>
