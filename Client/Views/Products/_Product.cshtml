@@ -5,7 +5,7 @@
 @inject SignInManager<User> SignInManager
 
 
-<div class="col s4">
+<div class="col s6 m4">
     <div class="card large">
         <div class="card-image">
             <img src=@GetImage()>
@@ -21,16 +21,16 @@
 </div>
 
 @{
-    string GetImage()
-    {
-        if (Model.PictureUri == null)
+        string GetImage()
         {
-            return "/images/products/notFound.png";
-        }
-        else
-        {
-            return Model.PictureUri;
-        }
+            if (Model.PictureUri == null)
+            {
+                return "/images/products/notFound.png";
+            }
+            else
+            {
+                return Model.PictureUri;
     }
+}
 }
 

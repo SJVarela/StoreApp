@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Persistance.Data;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,7 +40,7 @@ namespace Application.Services
         {
             return await _context.Products
                 .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);            
+                .FirstOrDefaultAsync(m => m.Id == id);
         }
 
         public async Task<IEnumerable<Product>> GetProductsAsync()
