@@ -9,7 +9,7 @@
 
 <div class="row">
     <div class="col s12">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div class="input-field">
                 <label asp-for="Name"></label>
                 <input asp-for="Name" class="validate" />
@@ -26,9 +26,8 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="input-field">
-                <label asp-for="PictureUri"></label>
-                <input asp-for="PictureUri" class="validate" />
-                <span asp-validation-for="PictureUri" class="text-danger"></span>
+                <label></label>
+                <input name="image" type="file"/>
             </div>
             <div class="input-field">
                 <select asp-for="CategoryId" asp-items="ViewBag.CategoryId"></select>

@@ -9,16 +9,21 @@ using Domain.Entities;
 using Persistance.Data;
 using Microsoft.AspNetCore.Authorization;
 using Application.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Client.Controllers
 {
     public class ProductsController : Controller
     {
         private IProductService _productService;
+        private IHostingEnvironment _env;
 
-        public ProductsController(IProductService productService)
+        public ProductsController(IProductService productService, IHostingEnvironment env)
         {
             _productService = productService;
+            _env = env;
         }
 
         // GET: Products
@@ -54,10 +59,16 @@ namespace Client.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,Price,PictureUri,CategoryId,Id")] Product product)
+        public async Task<IActionResult> Create([Bind("Name,Description,Price,CategoryId,Id")] Product product, IFormFile image)
         {
             if (ModelState.IsValid)
-            {
+            {                
+                using (var stream = new FileStream(_env.WebRootPath+"/images/products/"+image.FileName, FileMode.Create))
+                {
+                    
+                    await image.CopyToAsync(stream);
+                }
+                product.PictureUri = "/images/products/" + image.FileName;
                 await _productService.Add(product);
                 return RedirectToAction(nameof(Index));
             }
