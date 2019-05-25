@@ -19,11 +19,13 @@ namespace Client.Controllers
     {
         private IProductService _productService;
         private IHostingEnvironment _env;
+        private IOrderService _orderService;
 
-        public ProductsController(IProductService productService, IHostingEnvironment env)
+        public ProductsController(IProductService productService, IHostingEnvironment env, IOrderService orderService)
         {
             _productService = productService;
             _env = env;
+            _orderService = orderService;
         }
 
         // GET: Products
@@ -148,8 +150,7 @@ namespace Client.Controllers
         {
             await _productService.Delete(id);
             return RedirectToAction(nameof(Index));
-        }
-
+        }        
 
     }
 }

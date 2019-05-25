@@ -62,6 +62,7 @@ namespace Client
             //Services
             services.AddScoped<StoreDbContext>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IOrderService, OrderService>();
 
         }
 
