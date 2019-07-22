@@ -12,7 +12,7 @@ namespace Application.Services.Interfaces
         Task<Product> GetProduct(int id);
         Task<IEnumerable<Category>> GetCategories();
         Task Add(Product product);
-        Task Update(Product product);
+        Task<Product> Update(Product product);
         Task Delete(int id);
 
     }

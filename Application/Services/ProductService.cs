@@ -49,10 +49,11 @@ namespace Application.Services
             return await storeDbContext.ToListAsync();
         }
 
-        public async Task Update(Product product)
+        public async Task<Product> Update(Product product)
         {
-            _context.Update(product);
+            var result = _context.Update(product);
             await _context.SaveChangesAsync();
+            return result.Entity;
         }
     }
 }
