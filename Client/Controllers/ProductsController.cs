@@ -21,7 +21,7 @@ namespace Client.Controllers
         private IHostingEnvironment _env;
         private IOrderService _orderService;
 
-        public ProductsController(IProductService productService, IHostingEnvironment env, IOrderService orderService)
+        public ProductsController(IProductService productService, IOrderService orderService, IHostingEnvironment env = null)
         {
             _productService = productService;
             _env = env;
